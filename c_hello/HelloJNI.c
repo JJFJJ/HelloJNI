@@ -27,8 +27,9 @@ JNIEXPORT void JNICALL Java_HelloJNI_updateMySelf
   }
 
   jfieldID field_str = (*env)->GetFieldID(env, clazz, "m_str", "Ljava/lang/String;");
+  jstring j_str = NULL;
   if (field_str) {
-    jstring j_str = (*env)->GetObjectField(env, obj, field_str);
+    j_str = (*env)->GetObjectField(env, obj, field_str);
     const char *c_str = (*env)->GetStringUTFChars(env, j_str, NULL);
     printf("In C code, update string \"%s\" to ", c_str ? c_str : "");
     if (c_str) {
@@ -47,6 +48,12 @@ JNIEXPORT void JNICALL Java_HelloJNI_updateMySelf
     }
   } else {
     printf("Not found \"m_str\" with String\n");
+  }
+
+  // Call the Java method to output string
+  jmethodID method_id_print = (*env)->GetMethodID(env, clazz, "printInJava", "(Ljava/lang/String;)V");
+  if (method_id_print) {
+    (*env)->CallVoidMethod(env, obj, method_id_print, j_str);
   }
 }
 

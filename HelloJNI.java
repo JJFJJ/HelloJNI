@@ -12,6 +12,16 @@ public class HelloJNI
     private native int add(int a, int b);
     private native void printValue(int value);
 
+    public void printInJava(String str)
+    {
+        System.out.printf("%s in Java code\n", str);
+    }
+
+    public int addInJava(int a, int b)
+    {
+        return (a+b);
+    }
+
     public static void main(String[] args)
     {
         // new HelloJNI().sayHello();
@@ -23,6 +33,6 @@ public class HelloJNI
 
         System.out.printf("Before update, num=%d, str=%s\n", helloJNI.m_num, helloJNI.m_str);
         helloJNI.updateMySelf(321, "JNI Hello");
-        System.out.printf("After update, num=%d, str=%s\n", helloJNI.m_num, helloJNI.m_str);
+        // System.out.printf("After update, num=%d, str=%s\n", helloJNI.m_num, helloJNI.m_str);
     }
 }
