@@ -24,15 +24,16 @@ public class HelloJNI
 
     public static void main(String[] args)
     {
-        // new HelloJNI().sayHello();
 
         HelloJNI helloJNI = new HelloJNI();
-        helloJNI.sayHello();
 
+        /* Java -> JNI -> C */
+        helloJNI.sayHello();
         helloJNI.printValue(helloJNI.add(1, 5));
 
         System.out.printf("Before update, num=%d, str=%s\n", helloJNI.m_num, helloJNI.m_str);
+
+        /* Java -> JNI -> Java */
         helloJNI.updateMySelf(321, "JNI Hello");
-        // System.out.printf("After update, num=%d, str=%s\n", helloJNI.m_num, helloJNI.m_str);
     }
 }

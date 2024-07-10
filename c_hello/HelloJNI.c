@@ -13,33 +13,40 @@ JNIEXPORT void JNICALL Java_HelloJNI_updateMySelf
   jclass clazz = (*env)->GetObjectClass(env, obj);
 
   /**
-   * @brief Get the Field ID of the instance variable "num",
+   * @brief Get the Field ID of the instance variable "int m_num",
    * get or set the value by jobject and jfieldID
    */
   jfieldID field_num = (*env)->GetFieldID(env, clazz, "m_num", "I");
   if (field_num) {
     jint j_num = (*env)->GetIntField(env, obj, field_num);
     (*env)->SetIntField(env, obj, field_num, num);
-    printf("In C code, update num from %d to %d\n",
-          j_num, (*env)->GetIntField(env, obj, field_num));
+    printf("[%s %s line: %d], update num from %d to %d\n",
+          __FILE__, __FUNCTION__, __LINE__, j_num, (*env)->GetIntField(env, obj, field_num));
   } else {
-    printf("Not found \"m_num\" with int\n");
+    printf("[%s %s line: %d] Not found \"m_num\" with int\n",
+          __FILE__, __FUNCTION__, __LINE__);
   }
 
+  /**
+   * @brief Get the Field ID of the instance variable "String m_str",
+   * get or set the value by jobject and jfieldID
+   */
   jfieldID field_str = (*env)->GetFieldID(env, clazz, "m_str", "Ljava/lang/String;");
   jstring j_str = NULL;
   if (field_str) {
     j_str = (*env)->GetObjectField(env, obj, field_str);
     const char *c_str = (*env)->GetStringUTFChars(env, j_str, NULL);
-    printf("In C code, update string \"%s\" to ", c_str ? c_str : "");
+    printf("[%s %s line: %d] update string \"%s\" to ",
+          __FILE__, __FUNCTION__, __LINE__, c_str ? c_str : "");
     if (c_str) {
       (*env)->ReleaseStringUTFChars(env, j_str, c_str);
     }
-    const char *src_c_str = (*env)->GetStringUTFChars(env, str, NULL);
-    if (src_c_str) {
-      j_str = (*env)->NewStringUTF(env, src_c_str);
+
+    const char *new_c_str = (*env)->GetStringUTFChars(env, str, NULL);
+    if (new_c_str) {
+      j_str = (*env)->NewStringUTF(env, new_c_str);
       if (j_str) {
-        printf("\"%s\"\n", src_c_str);
+        printf("\"%s\"\n", new_c_str);
       } else {
         printf("NewStringUTF failure\n");
       }
